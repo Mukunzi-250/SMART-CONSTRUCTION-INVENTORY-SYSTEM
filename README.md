@@ -8,12 +8,9 @@ processed instantly, and suppliers are automatically managed—this system makes
 
 **📋 What's This Project About? 🤔**
 
-Running a construction materials business involves constant challenges: running out of critical
-
-materials like cement during peak construction seasons, overstocking expensive items like steel
-
-bars, losing track of supplier deliveries, and manual calculation errors in billing. These issues can
-
+Running a construction materials business involves constant challenges: running out of critical materials like cements
+during peak construction seasons, overstocking expensive items like steel bars, losing track of supplier deliveries, 
+and manual calculation errors in billing. These issues can
 cost businesses up to 25% of their potential revenue!
 
 Our PL/SQL-based **Smart Construction Material Inventory and Sales Management System**
@@ -34,4 +31,4 @@ businesses never face stockouts or financial losses due to manual errors.
 
 **Timeline:** November 2025 - December 2025 Database Development with PL/SQL (INSY 8311)
 
-**Lecturer:** Eric Maniraguha
+
