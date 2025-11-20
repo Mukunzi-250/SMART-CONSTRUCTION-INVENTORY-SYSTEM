@@ -187,24 +187,9 @@ The system has 8 core tables:
     description VARCHAR2(100)
 );
 
-**7.TABLE audit_logs**: CREATE TABLE audit_logs (
-    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id VARCHAR2(50),
-    action_time TIMESTAMP DEFAULT SYSTIMESTAMP,
-    table_name VARCHAR2(50),
-    operation VARCHAR2(20),
-    old_values CLOB,
-    new_values CLOB
-);
+**7.TABLE audit_logs**: CREATE TABLE audit_logs (audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,user_id VARCHAR2(50),action_time TIMESTAMP DEFAULT SYSTIMESTAMP,table_name VARCHAR2(50),operation VARCHAR2(20),old_values CLOB,new_values CLOB);
 
-**8.TABLE stock_alerts**: CREATE TABLE stock_alerts (
-    alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    material_id NUMBER REFERENCES materials(material_id),
-    alert_type VARCHAR2(50),
-    alert_message VARCHAR2(200),
-    alert_date DATE DEFAULT SYSDATE,
-    resolved CHAR(1) DEFAULT 'N'
-);
+**8.TABLE stock_alerts**: CREATE TABLE stock_alerts (alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,material_id NUMBER REFERENCES materials(material_id),alert_type VARCHAR2(50),alert_message VARCHAR2(200),alert_date DATE DEFAULT SYSDATE,resolved CHAR(1) DEFAULT 'N');
 
 # Database Relationships
 
@@ -216,6 +201,6 @@ One customer can make multiple purchases
 
 Comprehensive audit trail for all critical operations
 
-<img width="950" height="920" alt="Untitled (3) (3)" src="https://github.com/user-attachments/assets/40b4ab2d-4510-4f5a-9590-2de13bf8e57e" />
+<img width="850" height="820" alt="Untitled (3) (3)" src="https://github.com/user-attachments/assets/40b4ab2d-4510-4f5a-9590-2de13bf8e57e" />
 
 
