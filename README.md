@@ -96,3 +96,30 @@ businesses can't make informed decisions.
 ✅ Provide real-time business intelligence for decision making
 
 ✅ Ensure data security with comprehensive auditing
+
+# 🔄 Phase II: How a Construction Materials Business Works
+
+# Core Business Processes
+
+**1. Material Delivery from Suppliers**
+Supplier arrives with materials → Staff verify delivery → Update stock levels → Record supplier performance
+
+**2. Customer Sales Process**
+Customer requests materials → Check stock availability → Process sale → Update inventory → Generate invoice
+
+**3. Stock Management**
+Regular stock checks → Identify low-stock items → Generate purchase orders → Update reorder levels
+
+**4. Financial Tracking**
+Daily sales aggregation → Revenue calculation → Supplier payment processing → Profit analysis
+
+# Business Process Model (Swimlane Diagram)
+
+
+Suppliers → Delivery Receiving → Stock Update → Sales Processing → Customer Service
+    ↓              ↓                 ↓               ↓                 ↓
+Delivery → Verification → Inventory Management → Sales Execution → Customer Satisfaction
+
+# Picture of the Process
+<img width="713" height="576" alt="image" src="https://github.com/user-attachments/assets/a31260fa-e044-4493-b971-2b011634b782" />
+
