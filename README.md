@@ -2,9 +2,8 @@
 
 **A PL/SQL-Powered Solution for Construction Businesses!**
 
-Imagine a construction materials business where stock levels are always accurate, sales are
-
-processed instantly, and suppliers are automatically managed—this system makes it happen!
+Imagine a construction materials business where stock levels are always accurate, sales are processed instantly,
+and suppliers are automatically managed—this system makes it happen!
 
 **📋 What's This Project About? 🤔**
 
