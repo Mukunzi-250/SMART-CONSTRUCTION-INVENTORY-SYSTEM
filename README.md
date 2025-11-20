@@ -30,4 +30,21 @@ businesses never face stockouts or financial losses due to manual errors.
 
 **Timeline:** November 2025 - December 2025 Database Development with PL/SQL (INSY 8311)
 
+**GitHub:** [Link to be added for submission]
+
+**Real-World Impact**
+🏗️ Construction Industry Fact: Proper inventory management can reduce material costs by 15-20% and eliminate project
+delays caused by material shortages(Construction Industry Report, 2025).
+
+https://github.com/Mukunzi-250/smart-construction-inventory-system/
+├── 📁 phase-1-problem-statement/
+├── 📁 phase-2-business-process/
+├── 📁 phase-3-logical-design/
+├── 📁 phase-4-database-creation/
+├── 📁 phase-5-table-implementation/
+├── 📁 phase-6-plsql-development/
+├── 📁 phase-7-advanced-features/
+├── 📁 phase-8-documentation-bi/
+├── 📁 testing-results/
+└── 📁 conclusion/
 
