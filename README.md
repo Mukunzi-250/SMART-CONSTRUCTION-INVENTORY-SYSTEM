@@ -76,15 +76,23 @@ businesses can't make informed decisions.
 # Who Benefits from This System?
 
 **👷 Construction Business Owners** – Monitor stock levels, sales trends, and profitability in real-time
+
 **🏪 Store Managers & Attendants** – Process sales quickly and check stock availability instantly
+
 **📦 Suppliers** – Their delivery performance is tracked for better partnerships
+
 **💰 Accountants** – Accurate revenue calculations and financial reporting
+
 **👥 Customers** – Faster service and reliable material availability
 
 # Our Goals
 
 ✅ Eliminate stock-outs of critical construction materials
+
 ✅ Automate sales processing and inventory updates
+
 ✅ Track supplier performance and delivery reliability
+
 ✅ Provide real-time business intelligence for decision making
+
 ✅ Ensure data security with comprehensive auditing
