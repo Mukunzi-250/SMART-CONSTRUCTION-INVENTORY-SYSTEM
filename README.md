@@ -122,5 +122,5 @@ Suppliers → Delivery Receiving → Stock Update → Sales Processing → Custo
 Delivery → Verification → Inventory Management → Sales Execution → Customer Satisfaction
 
 # Picture of the Process
-<img width="710" height="570" alt="image" src="https://github.com/user-attachments/assets/a31260fa-e044-4493-b971-2b011634b782" />
+<img width="705" height="565" alt="image" src="https://github.com/user-attachments/assets/a31260fa-e044-4493-b971-2b011634b782" />
 
