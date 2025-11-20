@@ -117,9 +117,10 @@ Daily sales aggregation → Revenue calculation → Supplier payment processing 
 
 
 Suppliers → Delivery Receiving → Stock Update → Sales Processing → Customer Service
+
     ↓              ↓                 ↓               ↓                 ↓
 Delivery → Verification → Inventory Management → Sales Execution → Customer Satisfaction
 
 # Picture of the Process
-<img width="713" height="576" alt="image" src="https://github.com/user-attachments/assets/a31260fa-e044-4493-b971-2b011634b782" />
+<img width="710" height="570" alt="image" src="https://github.com/user-attachments/assets/a31260fa-e044-4493-b971-2b011634b782" />
 
