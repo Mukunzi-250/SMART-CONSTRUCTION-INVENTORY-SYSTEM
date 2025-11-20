@@ -124,3 +124,98 @@ Delivery → Verification → Inventory Management → Sales Execution → Custo
 # Picture of the Process
 <img width="705" height="560" alt="image" src="https://github.com/user-attachments/assets/a31260fa-e044-4493-b971-2b011634b782" />
 
+# 🗂️ Phase III: Database Design 
+
+# The Tables
+
+The system has 8 core tables:
+
+**1.TABLE materials**: CREATE TABLE materials (
+    material_id NUMBER PRIMARY KEY,
+    material_name VARCHAR2(100) NOT NULL,
+    category VARCHAR2(50) NOT NULL, -- Cement, Steel, Tiles, etc.
+    unit_price NUMBER(10,2) NOT NULL CHECK (unit_price > 0),
+    quantity_in_stock NUMBER DEFAULT 0,
+    reorder_level NUMBER NOT NULL,
+    supplier_id NUMBER,
+    created_date DATE DEFAULT SYSDATE
+);
+
+**2.TABLE suppliers**: CREATE TABLE suppliers (
+    supplier_id NUMBER PRIMARY KEY,
+    supplier_name VARCHAR2(100) NOT NULL,
+    contact_person VARCHAR2(100),
+    phone_number VARCHAR2(20),
+    email VARCHAR2(100),
+    address VARCHAR2(200),
+    performance_rating NUMBER(3,1) DEFAULT 5.0
+);
+
+**3.TABLE customers**: CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(100) NOT NULL,
+    customer_type VARCHAR2(20) CHECK (customer_type IN ('Individual', 'Contractor', 'Company')),
+    phone_number VARCHAR2(20),
+    email VARCHAR2(100),
+    address VARCHAR2(200)
+);
+
+**4.TABLE sales**: CREATE TABLE sales (
+    sale_id NUMBER PRIMARY KEY,
+    sale_date DATE DEFAULT SYSDATE NOT NULL,
+    customer_id NUMBER REFERENCES customers(customer_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_sold NUMBER NOT NULL CHECK (quantity_sold > 0),
+    unit_price NUMBER(10,2) NOT NULL,
+    total_amount NUMBER(10,2) NOT NULL,
+    payment_method VARCHAR2(20) DEFAULT 'Cash',
+    status VARCHAR2(20) DEFAULT 'Completed'
+);
+
+**5.TABLE deliveries**: CREATE TABLE deliveries (
+    delivery_id NUMBER PRIMARY KEY,
+    delivery_date DATE DEFAULT SYSDATE NOT NULL,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_delivered NUMBER NOT NULL,
+    received_by VARCHAR2(100),
+    status VARCHAR2(20) DEFAULT 'Received'
+);
+
+**6.TABLE holidays**: CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description VARCHAR2(100)
+);
+
+**7.TABLE audit_logs**: CREATE TABLE audit_logs (
+    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id VARCHAR2(50),
+    action_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+    table_name VARCHAR2(50),
+    operation VARCHAR2(20),
+    old_values CLOB,
+    new_values CLOB
+);
+
+**8.TABLE stock_alerts**: CREATE TABLE stock_alerts (
+    alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    material_id NUMBER REFERENCES materials(material_id),
+    alert_type VARCHAR2(50),
+    alert_message VARCHAR2(200),
+    alert_date DATE DEFAULT SYSDATE,
+    resolved CHAR(1) DEFAULT 'N'
+);
+
+# Database Relationships
+
+One supplier can deliver multiple materials
+
+One material can be sold in multiple sales transactions
+
+One customer can make multiple purchases
+
+Comprehensive audit trail for all critical operations
+
+<img width="950" height="920" alt="Untitled (3) (3)" src="https://github.com/user-attachments/assets/40b4ab2d-4510-4f5a-9590-2de13bf8e57e" />
+
+
