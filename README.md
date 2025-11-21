@@ -172,20 +172,9 @@ The system has 8 core tables:
     status VARCHAR2(20) DEFAULT 'Completed'
 );
 
-**5.TABLE deliveries**: CREATE TABLE deliveries (
-    delivery_id NUMBER PRIMARY KEY,
-    delivery_date DATE DEFAULT SYSDATE NOT NULL,
-    supplier_id NUMBER REFERENCES suppliers(supplier_id),
-    material_id NUMBER REFERENCES materials(material_id),
-    quantity_delivered NUMBER NOT NULL,
-    received_by VARCHAR2(100),
-    status VARCHAR2(20) DEFAULT 'Received'
-);
+**5.TABLE deliveries**: CREATE TABLE deliveries (delivery_id NUMBER PRIMARY KEY,delivery_date DATE DEFAULT SYSDATE NOT NULL,supplier_id NUMBER REFERENCES suppliers(supplier_id),material_id NUMBER REFERENCES materials(material_id),quantity_delivered NUMBER NOT NULL,received_by VARCHAR2(100),status VARCHAR2(20) DEFAULT 'Received');
 
-**6.TABLE holidays**: CREATE TABLE holidays (
-    holiday_date DATE PRIMARY KEY,
-    description VARCHAR2(100)
-);
+**6.TABLE holidays**: CREATE TABLE holidays (holiday_date DATE PRIMARY KEY,description VARCHAR2(100));
 
 **7.TABLE audit_logs**: CREATE TABLE audit_logs (audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,user_id VARCHAR2(50),action_time TIMESTAMP DEFAULT SYSTIMESTAMP,table_name VARCHAR2(50),operation VARCHAR2(20),old_values CLOB,new_values CLOB);
 
@@ -202,5 +191,12 @@ One customer can make multiple purchases
 Comprehensive audit trail for all critical operations
 
 <img width="850" height="820" alt="Untitled (3) (3)" src="https://github.com/user-attachments/assets/40b4ab2d-4510-4f5a-9590-2de13bf8e57e" />
+
+
+# ⚙️ Phase IV-VI: Implementation Showcase
+
+# Smart PL/SQL Features
+
+**1. Automatic Stock Update Trigger**
 
 
