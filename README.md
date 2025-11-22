@@ -228,9 +228,7 @@ This screenshot showing the success messages
 
 # Creating Tables
 
--- PHASE V: Table Implementation
--- Smart Construction Material Inventory System
--- Student: MUKUNZI Eduine (29275)
+-- Create ALL 5 tables for Construction Inventory System
 
 -- 1. SUPPLIERS TABLE
 CREATE TABLE suppliers (
@@ -283,10 +281,58 @@ CREATE TABLE deliveries (
     received_by VARCHAR2(100)
 );
 
--- Verification
-SELECT '✅ ALL 5 TABLES CREATED SUCCESSFULLY' as status FROM DUAL;
-SELECT 'Tables: SUPPLIERS, MATERIALS, CUSTOMERS, SALES, DELIVERIES' as tables_created FROM DUAL;
+SELECT '✅ ALL 5 TABLES CREATED SUCCESSFULLY' FROM DUAL;
 
-<img width="773" height="400" alt="image" src="https://github.com/user-attachments/assets/95dff191-c833-4134-a17b-40a8d1866597" />
+
+<img width="779" height="392" alt="image" src="https://github.com/user-attachments/assets/73d4d358-5a66-4e82-9cb3-e2b18bd0ed1c" />
+
+
+**02-insert-data.sql**
+-- Insert data into ALL 5 tables
+
+-- SUPPLIERS: 5 records
+INSERT INTO suppliers VALUES (1, 'CementCo Rwanda Ltd', 'Jean Bosco', '0781000001', 'Kigali');
+INSERT INTO suppliers VALUES (2, 'Steel Masters Africa', 'Alice Uwase', '0781000002', 'Gasabo');
+INSERT INTO suppliers VALUES (3, 'Tile World Rwanda', 'Patrick Brown', '0781000003', 'Kicukiro');
+INSERT INTO suppliers VALUES (4, 'Roofing Solutions Co', 'Marie Claire', '0781000004', 'Nyarugenge');
+INSERT INTO suppliers VALUES (5, 'Hardware Express', 'David Smith', '0781000005', 'Gikondo');
+
+-- MATERIALS: 8 records
+INSERT INTO materials VALUES (1, 'Portland Cement 50kg', 'Cement', 8500, 500, 100, 1);
+INSERT INTO materials VALUES (2, 'Iron Bars 12mm', 'Steel', 12500, 200, 50, 2);
+INSERT INTO materials VALUES (3, 'Iron Bars 8mm', 'Steel', 9500, 300, 75, 2);
+INSERT INTO materials VALUES (4, 'Ceramic Tiles 30x30cm', 'Tiles', 4500, 800, 200, 3);
+INSERT INTO materials VALUES (5, 'Roofing Sheets 3m', 'Roofing', 9800, 150, 30, 4);
+INSERT INTO materials VALUES (6, 'Nails 2-inch', 'Hardware', 500, 1000, 200, 5);
+INSERT INTO materials VALUES (7, 'Paint White 4L', 'Finishing', 12000, 100, 25, 5);
+INSERT INTO materials VALUES (8, 'Sand Ton', 'Aggregate', 15000, 50, 10, 1);
+
+-- CUSTOMERS: 5 records
+INSERT INTO customers VALUES (1, 'Building Contractors Rwanda', 'Company', '0782000001', 'Kigali');
+INSERT INTO customers VALUES (2, 'Home Solutions Ltd', 'Company', '0782000002', 'Gasabo');
+INSERT INTO customers VALUES (3, 'Individual Home Builder', 'Individual', '0782000003', 'Remera');
+INSERT INTO customers VALUES (4, 'Construction Masters Co', 'Company', '0782000004', 'Kicukiro');
+INSERT INTO customers VALUES (5, 'Real Estate Developers', 'Company', '0782000005', 'Nyarutarama');
+
+-- SALES: 6 records
+INSERT INTO sales VALUES (1, DATE '2025-11-01', 1, 1, 10, 8500, 85000, 'Cash');
+INSERT INTO sales VALUES (2, DATE '2025-11-02', 2, 2, 5, 12500, 62500, 'Bank Transfer');
+INSERT INTO sales VALUES (3, DATE '2025-11-03', 3, 4, 20, 4500, 90000, 'Cash');
+INSERT INTO sales VALUES (4, DATE '2025-11-04', 4, 5, 8, 9800, 78400, 'Mobile Money');
+INSERT INTO sales VALUES (5, DATE '2025-11-05', 5, 3, 15, 9500, 142500, 'Bank Transfer');
+INSERT INTO sales VALUES (6, DATE '2025-11-06', 1, 6, 50, 500, 25000, 'Cash');
+
+-- DELIVERIES: 5 records
+INSERT INTO deliveries VALUES (1, DATE '2025-11-10', 1, 1, 200, 'Store Manager');
+INSERT INTO deliveries VALUES (2, DATE '2025-11-11', 2, 2, 100, 'Assistant Manager');
+INSERT INTO deliveries VALUES (3, DATE '2025-11-12', 3, 4, 300, 'Store Manager');
+INSERT INTO deliveries VALUES (4, DATE '2025-11-13', 4, 5, 50, 'Assistant Manager');
+INSERT INTO deliveries VALUES (5, DATE '2025-11-14', 5, 6, 200, 'Store Manager');
+
+COMMIT;
+SELECT '✅ DATA INSERTED INTO ALL 5 TABLES' FROM DUAL;
+
+
+<img width="786" height="390" alt="image" src="https://github.com/user-attachments/assets/9d7f14e7-73f1-45fd-8650-69a0e6882b7c" />
 
 
