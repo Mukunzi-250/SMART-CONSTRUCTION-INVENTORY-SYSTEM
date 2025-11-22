@@ -243,4 +243,138 @@ This screenshot showing the success messages
 
 # Creating Tables
 
+**01-create-all-tables.sql**
+
+-- PHASE V: Create ALL Tables FIRST
+CREATE TABLE suppliers (
+    supplier_id NUMBER PRIMARY KEY,
+    supplier_name VARCHAR2(100) NOT NULL,
+    contact_person VARCHAR2(100),
+    phone_number VARCHAR2(20),
+    address VARCHAR2(200)
+);
+
+CREATE TABLE materials (
+    material_id NUMBER PRIMARY KEY,
+    material_name VARCHAR2(100) NOT NULL,
+    category VARCHAR2(50) NOT NULL,
+    unit_price NUMBER(10,2) NOT NULL CHECK (unit_price > 0),
+    quantity_in_stock NUMBER DEFAULT 0,
+    reorder_level NUMBER NOT NULL,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id),
+    last_updated DATE DEFAULT SYSDATE
+);
+
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(100) NOT NULL,
+    customer_type VARCHAR2(20),
+    phone_number VARCHAR2(20),
+    address VARCHAR2(200)
+);
+
+CREATE TABLE sales (
+    sale_id NUMBER PRIMARY KEY,
+    sale_date DATE DEFAULT SYSDATE,
+    customer_id NUMBER REFERENCES customers(customer_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_sold NUMBER NOT NULL CHECK (quantity_sold > 0),
+    unit_price NUMBER(10,2) NOT NULL,
+    total_amount NUMBER(10,2) NOT NULL,
+    payment_method VARCHAR2(20) DEFAULT 'Cash'
+);
+
+CREATE TABLE deliveries (
+    delivery_id NUMBER PRIMARY KEY,
+    delivery_date DATE DEFAULT SYSDATE,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_delivered NUMBER NOT NULL,
+    received_by VARCHAR2(100)
+);
+
+CREATE TABLE stock_alerts (
+    alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    material_id NUMBER REFERENCES materials(material_id),
+    alert_type VARCHAR2(50) NOT NULL,
+    alert_message VARCHAR2(200) NOT NULL,
+    alert_date DATE DEFAULT SYSDATE,
+    resolved CHAR(1) DEFAULT 'N'
+);
+
+CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description VARCHAR2(100)
+);
+
+CREATE TABLE audit_logs (
+    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id VARCHAR2(50),
+    action_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+    table_name VARCHAR2(50),
+    operation VARCHAR2(20),
+    old_values CLOB,
+    new_values CLOB
+);
+
+SELECT '✅ ALL 8 TABLES CREATED SUCCESSFULLY' FROM DUAL;
+
+<img width="960" height="400" alt="image" src="https://github.com/user-attachments/assets/dbab1501-71ad-422e-a7ad-0b050fa39a17" />
+
+**02-insert-all-data.sql**
+
+-- Insert data into ALL tables
+
+-- Suppliers
+INSERT INTO suppliers VALUES (1, 'CementCo Rwanda Ltd', 'Jean Bosco', '0781000001', 'Kigali');
+INSERT INTO suppliers VALUES (2, 'Steel Masters Africa', 'Alice Uwase', '0781000002', 'Gasabo');
+INSERT INTO suppliers VALUES (3, 'Tile World Rwanda', 'Patrick Brown', '0781000003', 'Kicukiro');
+INSERT INTO suppliers VALUES (4, 'Roofing Solutions Co', 'Marie Claire', '0781000004', 'Nyarugenge');
+INSERT INTO suppliers VALUES (5, 'Hardware Express', 'David Smith', '0781000005', 'Gikondo');
+
+-- Materials
+INSERT INTO materials VALUES (1, 'Portland Cement 50kg', 'Cement', 8500, 500, 100, 1, SYSDATE);
+INSERT INTO materials VALUES (2, 'Iron Bars 12mm', 'Steel', 12500, 200, 50, 2, SYSDATE);
+INSERT INTO materials VALUES (3, 'Iron Bars 8mm', 'Steel', 9500, 300, 75, 2, SYSDATE);
+INSERT INTO materials VALUES (4, 'Ceramic Tiles 30x30cm', 'Tiles', 4500, 800, 200, 3, SYSDATE);
+INSERT INTO materials VALUES (5, 'Roofing Sheets 3m', 'Roofing', 9800, 150, 30, 4, SYSDATE);
+INSERT INTO materials VALUES (6, 'Nails 2-inch', 'Hardware', 500, 1000, 200, 5, SYSDATE);
+INSERT INTO materials VALUES (7, 'Paint White 4L', 'Finishing', 12000, 100, 25, 5, SYSDATE);
+INSERT INTO materials VALUES (8, 'Sand Ton', 'Aggregate', 15000, 50, 10, 1, SYSDATE);
+
+-- Customers
+INSERT INTO customers VALUES (1, 'Building Contractors Rwanda', 'Company', '0782000001', 'Kigali');
+INSERT INTO customers VALUES (2, 'Home Solutions Ltd', 'Company', '0782000002', 'Gasabo');
+INSERT INTO customers VALUES (3, 'Individual Home Builder', 'Individual', '0782000003', 'Remera');
+INSERT INTO customers VALUES (4, 'Construction Masters Co', 'Company', '0782000004', 'Kicukiro');
+INSERT INTO customers VALUES (5, 'Real Estate Developers', 'Company', '0782000005', 'Nyarutarama');
+
+-- Sales
+INSERT INTO sales VALUES (1, DATE '2025-11-01', 1, 1, 10, 8500, 85000, 'Cash');
+INSERT INTO sales VALUES (2, DATE '2025-11-02', 2, 2, 5, 12500, 62500, 'Bank Transfer');
+INSERT INTO sales VALUES (3, DATE '2025-11-03', 3, 4, 20, 4500, 90000, 'Cash');
+INSERT INTO sales VALUES (4, DATE '2025-11-04', 4, 5, 8, 9800, 78400, 'Mobile Money');
+INSERT INTO sales VALUES (5, DATE '2025-11-05', 5, 3, 15, 9500, 142500, 'Bank Transfer');
+INSERT INTO sales VALUES (6, DATE '2025-11-06', 1, 6, 50, 500, 25000, 'Cash');
+
+-- Deliveries
+INSERT INTO deliveries VALUES (1, DATE '2025-11-10', 1, 1, 200, 'Store Manager');
+INSERT INTO deliveries VALUES (2, DATE '2025-11-11', 2, 2, 100, 'Assistant Manager');
+INSERT INTO deliveries VALUES (3, DATE '2025-11-12', 3, 4, 300, 'Store Manager');
+INSERT INTO deliveries VALUES (4, DATE '2025-11-13', 4, 5, 50, 'Assistant Manager');
+INSERT INTO deliveries VALUES (5, DATE '2025-11-14', 5, 6, 200, 'Store Manager');
+
+-- Holidays
+INSERT INTO holidays VALUES (DATE '2025-12-25', 'Christmas Day');
+INSERT INTO holidays VALUES (DATE '2026-01-01', 'New Years Day');
+
+COMMIT;
+
+SELECT '✅ DATA INSERTED INTO ALL TABLES' FROM DUAL;
+
+<img width="956" height="398" alt="image" src="https://github.com/user-attachments/assets/e8149d37-1493-4609-a7e9-42269f8dbb25" />
+
+
+
+
 
