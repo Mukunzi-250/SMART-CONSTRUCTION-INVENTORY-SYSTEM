@@ -197,6 +197,8 @@ Comprehensive audit trail for all critical operations
 
 # Smart PL/SQL Features
 
-**1. Automatic Stock Update Trigger**
+# Run Phase IV Verification Query
+
+<img width="632" height="359" alt="image" src="https://github.com/user-attachments/assets/3b1c36f8-5a46-48d7-a9e3-82fce37f5117" />
 
 
