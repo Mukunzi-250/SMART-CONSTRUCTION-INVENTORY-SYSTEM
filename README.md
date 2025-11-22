@@ -224,3 +224,69 @@ This screenshot showing the success messages
 
 **5.Screenshots Taken** - Perfect evidence for submission
 
+# PHASE V: Table Implementation & Data Insertion 🚀
+
+# Creating Tables
+
+-- PHASE V: Table Implementation
+-- Smart Construction Material Inventory System
+-- Student: MUKUNZI Eduine (29275)
+
+-- 1. SUPPLIERS TABLE
+CREATE TABLE suppliers (
+    supplier_id NUMBER PRIMARY KEY,
+    supplier_name VARCHAR2(100) NOT NULL,
+    contact_person VARCHAR2(100),
+    phone_number VARCHAR2(20),
+    address VARCHAR2(200)
+);
+
+-- 2. MATERIALS TABLE
+CREATE TABLE materials (
+    material_id NUMBER PRIMARY KEY,
+    material_name VARCHAR2(100) NOT NULL,
+    category VARCHAR2(50) NOT NULL,
+    unit_price NUMBER(10,2) NOT NULL CHECK (unit_price > 0),
+    quantity_in_stock NUMBER DEFAULT 0,
+    reorder_level NUMBER NOT NULL,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id)
+);
+
+-- 3. CUSTOMERS TABLE
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(100) NOT NULL,
+    customer_type VARCHAR2(20),
+    phone_number VARCHAR2(20),
+    address VARCHAR2(200)
+);
+
+-- 4. SALES TABLE
+CREATE TABLE sales (
+    sale_id NUMBER PRIMARY KEY,
+    sale_date DATE DEFAULT SYSDATE,
+    customer_id NUMBER REFERENCES customers(customer_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_sold NUMBER NOT NULL CHECK (quantity_sold > 0),
+    unit_price NUMBER(10,2) NOT NULL,
+    total_amount NUMBER(10,2) NOT NULL,
+    payment_method VARCHAR2(20) DEFAULT 'Cash'
+);
+
+-- 5. DELIVERIES TABLE
+CREATE TABLE deliveries (
+    delivery_id NUMBER PRIMARY KEY,
+    delivery_date DATE DEFAULT SYSDATE,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_delivered NUMBER NOT NULL,
+    received_by VARCHAR2(100)
+);
+
+-- Verification
+SELECT '✅ ALL 5 TABLES CREATED SUCCESSFULLY' as status FROM DUAL;
+SELECT 'Tables: SUPPLIERS, MATERIALS, CUSTOMERS, SALES, DELIVERIES' as tables_created FROM DUAL;
+
+<img width="773" height="400" alt="image" src="https://github.com/user-attachments/assets/95dff191-c833-4134-a17b-40a8d1866597" />
+
+
