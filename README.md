@@ -198,7 +198,15 @@ Comprehensive audit trail for all critical operations
 # Smart PL/SQL Features
 
 # Run Phase IV Verification Query
+**📸 SCREENSHOT 1: Code Execution**
 
 <img width="632" height="359" alt="image" src="https://github.com/user-attachments/assets/3b1c36f8-5a46-48d7-a9e3-82fce37f5117" />
 
+**📸 SCREENSHOT 2: Query Results**
+<img width="503" height="326" alt="image" src="https://github.com/user-attachments/assets/689a9cd1-5d94-4321-9015-a7149ab97354" />
+This screenshot showing the verification message
 
+**📸 SCREENSHOT 3: DBMS Output**
+<img width="512" height="366" alt="image" src="https://github.com/user-attachments/assets/fe582359-bce4-4ddd-88f9-e3160338efb8" />
+
+This screenshot showing the success messages
