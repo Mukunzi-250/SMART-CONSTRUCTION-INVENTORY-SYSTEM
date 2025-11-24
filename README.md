@@ -130,6 +130,7 @@ Delivery → Verification → Inventory Management → Sales Execution → Custo
 
 The system has 8 core tables:
 
+```SQL
 **1.TABLE materials**: CREATE TABLE materials (
     material_id NUMBER PRIMARY KEY,
     material_name VARCHAR2(100) NOT NULL,
@@ -141,7 +142,8 @@ The system has 8 core tables:
     created_date DATE DEFAULT SYSDATE
 );
 
-**2.TABLE suppliers**: CREATE TABLE suppliers (
+
+ **2.TABLE suppliers**: CREATE TABLE suppliers (
     supplier_id NUMBER PRIMARY KEY,
     supplier_name VARCHAR2(100) NOT NULL,
     contact_person VARCHAR2(100),
@@ -160,6 +162,7 @@ The system has 8 core tables:
     address VARCHAR2(200)
 );
 
+
 **4.TABLE sales**: CREATE TABLE sales (
     sale_id NUMBER PRIMARY KEY,
     sale_date DATE DEFAULT SYSDATE NOT NULL,
@@ -172,13 +175,22 @@ The system has 8 core tables:
     status VARCHAR2(20) DEFAULT 'Completed'
 );
 
-**5.TABLE deliveries**: CREATE TABLE deliveries (delivery_id NUMBER PRIMARY KEY,delivery_date DATE DEFAULT SYSDATE NOT NULL,supplier_id NUMBER REFERENCES suppliers(supplier_id),material_id NUMBER REFERENCES materials(material_id),quantity_delivered NUMBER NOT NULL,received_by VARCHAR2(100),status VARCHAR2(20) DEFAULT 'Received');
 
-**6.TABLE holidays**: CREATE TABLE holidays (holiday_date DATE PRIMARY KEY,description VARCHAR2(100));
+**5.TABLE deliveries**: CREATE TABLE deliveries (
+delivery_id NUMBER PRIMARY KEY,delivery_date DATE DEFAULT SYSDATE NOT NULL,supplier_id NUMBER REFERENCES suppliers(supplier_id),material_id NUMBER REFERENCES materials(material_id),quantity_delivered NUMBER NOT NULL,received_by VARCHAR2(100),status VARCHAR2(20) DEFAULT 'Received');
 
-**7.TABLE audit_logs**: CREATE TABLE audit_logs (audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,user_id VARCHAR2(50),action_time TIMESTAMP DEFAULT SYSTIMESTAMP,table_name VARCHAR2(50),operation VARCHAR2(20),old_values CLOB,new_values CLOB);
 
-**8.TABLE stock_alerts**: CREATE TABLE stock_alerts (alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,material_id NUMBER REFERENCES materials(material_id),alert_type VARCHAR2(50),alert_message VARCHAR2(200),alert_date DATE DEFAULT SYSDATE,resolved CHAR(1) DEFAULT 'N');
+ **6.TABLE holidays**: CREATE TABLE holidays (
+holiday_date DATE PRIMARY KEY,description VARCHAR2(100));
+
+
+ **7.TABLE audit_logs**: CREATE TABLE audit_logs (
+audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,user_id VARCHAR2(50),action_time TIMESTAMP DEFAULT SYSTIMESTAMP,table_name VARCHAR2(50),operation VARCHAR2(20),old_values CLOB,new_values CLOB);
+
+
+ **8.TABLE stock_alerts**: CREATE TABLE stock_alerts (
+alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,material_id NUMBER REFERENCES materials(material_id),alert_type VARCHAR2(50),alert_message VARCHAR2(200),alert_date DATE DEFAULT SYSDATE,resolved CHAR(1) DEFAULT 'N');
+```
 
 # Database Relationships
 
@@ -245,6 +257,7 @@ This screenshot showing the success messages
 
 **01-create-all-tables.sql**
 
+```SQL
 -- PHASE V: Create ALL Tables FIRST
 CREATE TABLE suppliers (
     supplier_id NUMBER PRIMARY KEY,
@@ -316,6 +329,7 @@ CREATE TABLE audit_logs (
     old_values CLOB,
     new_values CLOB
 );
+```
 
 SELECT '✅ ALL 8 TABLES CREATED SUCCESSFULLY' FROM DUAL;
 
@@ -323,6 +337,7 @@ SELECT '✅ ALL 8 TABLES CREATED SUCCESSFULLY' FROM DUAL;
 
 **02-insert-all-data.sql**
 
+```SQL
 -- Insert data into ALL tables
 
 -- Suppliers
@@ -369,6 +384,7 @@ INSERT INTO holidays VALUES (DATE '2025-12-25', 'Christmas Day');
 INSERT INTO holidays VALUES (DATE '2026-01-01', 'New Years Day');
 
 COMMIT;
+```
 
 SELECT '✅ DATA INSERTED INTO ALL TABLES' FROM DUAL;
 
