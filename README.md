@@ -392,5 +392,76 @@ SELECT '✅ DATA INSERTED INTO ALL TABLES' FROM DUAL;
 
 
 
+# 🔗 Normalization Achievements
 
+# 🔹 First Normal Form (1NF)
+
+All tables contain atomic values
+
+No repeating groups in any columns
+
+Each sales transaction recorded as individual rows
+
+# 🔹 Second Normal Form (2NF)
+
+**Suppliers table** eliminates partial dependencies - all attributes depend fully on supplier_id
+
+**Materials table** maintains complete functional dependency on material_id
+
+Foreign key relationships properly established
+
+# 🔹 Third Normal Form (3NF)
+
+**Transitive dependencies removed:** Supplier details separated from materials data
+
+**Single responsibility:** Each table serves a distinct business entity
+
+**Referential integrity:** Foreign key constraints enforce valid relationships
+
+# 💰 Sales Transaction Evidence
+
+**Successful data insertion confirms table functionality:**
+
+. 6 sales transactions processed
+
+. Multiple payment methods supported (Cash, Bank Transfer, Mobile Money)
+
+. Complex calculations demonstrated (quantity × unit price = total amount)
+
+. Date-based operations functioning correctly
+
+# 🎯 Design Excellence Achieved
+
+# ✅ Data Integrity
+
+. Primary keys enforce entity uniqueness
+
+. Foreign keys maintain relational integrity
+
+. Check constraints validate business rules (unit_price > 0)
+
+# ✅ Business Logic Support
+
+. Inventory tracking through quantity_in_global
+
+. Pricing management with unit_price
+
+. Supplier relationship management
+
+. Sales transaction processing with payment methods
+
+# ✅ Scalability
+
+. Normalized structure supports future expansion
+
+. Flexible enough for additional business entities
+
+. Proper indexing foundation for performance
+
+
+# 🚀 Phase VI: PL/SQL Programming & Advanced Database Operations
+
+# 📋 Phase VI Objectives:
+
+Implement stored procedures, functions, triggers, and advanced queries to automate business processes and ensure data integrity.
 
