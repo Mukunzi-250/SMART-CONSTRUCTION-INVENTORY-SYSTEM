@@ -459,9 +459,241 @@ Foreign key relationships properly established
 . Proper indexing foundation for performance
 
 
-# 🚀 Phase VI: PL/SQL Programming & Advanced Database Operations
+# 🏗️ Phase VI: Using the Database 🚀
+The system isn't just a box—it's alive! It lets staff add, change, and check info easily.
 
-# 📋 Phase VI Objectives:
+# 1. DML (Data Manipulation Language)
+```sql
+UPDATE materials SET quantity_in_stock = 90 WHERE material_id = 1;
 
-Implement stored procedures, functions, triggers, and advanced queries to automate business processes and ensure data integrity.
+INSERT INTO customers (customer_id, customer_name, phone_number) 
+VALUES (100, 'New Construction Co.', '+250788888888');
 
+UPDATE sales SET payment_status = 'PAID' WHERE sale_id = 1;
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/ace7298c-eeb7-47fd-81dd-96799968d818" />
+
+# 2. DDL (Data Definition Language)
+
+
+
+# 3. Checking Payments
+
+**Question:** "How much has each customer paid, and what's their running total?"
+```sql
+SELECT 
+    s.customer_id,
+    c.customer_name,
+    p.payment_id,
+    p.payment_amount,
+    SUM(p.payment_amount) OVER (
+        PARTITION BY s.customer_id 
+        ORDER BY p.payment_date
+    ) AS running_total
+FROM payments p
+JOIN sales s ON p.sale_id = s.sale_id
+JOIN customers c ON s.customer_id = c.customer_id;
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/ead728ca-999e-482e-a439-fb58df2d636a" />
+
+**Why Cool?** This shows a customer's payments adding up over time, helping managers spot reliable customers!
+
+# 4. Smart Procedure - 2. Analytical Task
+
+**Problem:** Show each customer's payment history and calculate a running total of payments.
+
+**Solution:** Used a window function to group payments by customer and compute a cumulative total.
+
+```sql
+SELECT 
+    s.customer_id,
+    c.customer_name,
+    p.payment_id,
+    p.payment_amount,
+    p.payment_date,
+    SUM(p.payment_amount) OVER (
+        PARTITION BY s.customer_id 
+        ORDER BY p.payment_date
+    ) AS running_total
+FROM payments p
+JOIN sales s ON p.sale_id = s.sale_id
+JOIN customers c ON s.customer_id = c.customer_id;
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/395fb576-e699-46ea-bfff-f8f491e196bf" />
+
+This query groups payments by customer_id and shows a running total for tracking spending.
+See payment_running_total.png for the query execution and result (customer_id 2000, payment_id 5000, amount 540000, running_total 540000).
+
+# 5. Procedure Implementation
+
+The get_customer_info procedure takes a customer ID as input and searches for the customer's name and phone number in the customers table. If the customer is found, it prints their name and phone number. If no customer is found with that ID, it shows a message saying so. If any other error happens, it prints a general error message. This helps safely get and display customer information using the given ID.
+
+```sql
+CREATE OR REPLACE PROCEDURE get_customer_info(p_customer_id IN NUMBER) IS
+    v_name customers.customer_name%TYPE;
+    v_phone customers.phone_number%TYPE;
+BEGIN
+    SELECT customer_name, phone_number
+    INTO v_name, v_phone
+    FROM customers
+    WHERE customer_id = p_customer_id;
+
+    DBMS_OUTPUT.PUT_LINE('Customer Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Phone Number: ' || v_phone);
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No customer found with ID ' || p_customer_id);
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/1b0247e5-48fa-45e2-a89e-cb1500f9c5bb" />
+
+# Procedure call:
+
+```sql
+BEGIN
+    get_customer_info(2000);
+END;
+/
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/61f105fc-1652-4a34-90a9-dc273b22e58f" />
+
+# 6. Implementation with Cursor
+
+Created a cursor get_customer_purchases to list all purchases for a given customer using a cursor to fetch sale details efficiently.
+
+```sql
+DECLARE
+    CURSOR c_customer_purchases IS
+        SELECT sale_id, material_id, quantity_sold, total_amount, sale_date
+        FROM sales
+        WHERE customer_id = 2000;
+    v_sale_id sales.sale_id%TYPE;
+    v_material_id sales.material_id%TYPE;
+    v_quantity sales.quantity_sold%TYPE;
+    v_total sales.total_amount%TYPE;
+    v_date sales.sale_date%TYPE;
+BEGIN
+    OPEN c_customer_purchases;
+    LOOP
+        FETCH c_customer_purchases INTO v_sale_id, v_material_id, v_quantity, v_total, v_date;
+        EXIT WHEN c_customer_purchases%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Sale ID: ' || v_sale_id || 
+                            ', Material: ' || v_material_id || 
+                            ', Quantity: ' || v_quantity || 
+                            ', Total: ' || v_total || 
+                            ', Date: ' || v_date);
+    END LOOP;
+    CLOSE c_customer_purchases;
+END;
+/
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/462cf0b6-5dc3-4fe0-b19b-2bd9a4fd429e" />
+
+See customer_purchases_cursor.png for the procedure execution (Sale ID: 4000, Material: 1000, Quantity: 50, Total: 540000, Date: 01-OCT-25).
+
+# 7. Function Implementation
+
+Created a function total_amount_paid to calculate the total payments for a customer.
+
+```sql
+CREATE OR REPLACE FUNCTION total_amount_paid(p_customer_id IN NUMBER) 
+RETURN NUMBER IS
+    v_total NUMBER;
+BEGIN
+    SELECT SUM(p.payment_amount)
+    INTO v_total
+    FROM payments p
+    JOIN sales s ON p.sale_id = s.sale_id
+    WHERE s.customer_id = p_customer_id;
+    RETURN NVL(v_total, 0);
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 0;
+    WHEN OTHERS THEN
+        RETURN -1;
+END;
+/
+```
+
+# Testing:
+
+```sql
+SELECT total_amount_paid(2000) as total_paid FROM DUAL;
+```
+
+See total_amount_paid.png for the function creation and a test query result (total_paid 540000 for customer_id 2000).
+
+# 8. Package Implementation
+
+Created a package customer_tools to organize related procedures and functions.
+
+```sql
+CREATE OR REPLACE PACKAGE BODY customer_tools AS
+    
+    PROCEDURE list_purchases(p_customer_id IN NUMBER) IS
+    BEGIN
+        FOR rec IN (
+            SELECT sale_id, material_id, quantity_sold, total_amount, sale_date
+            FROM sales
+            WHERE customer_id = p_customer_id
+        ) LOOP
+            DBMS_OUTPUT.PUT_LINE('Sale ID: ' || rec.sale_id || 
+                                ', Material: ' || rec.material_id || 
+                                ', Quantity: ' || rec.quantity_sold || 
+                                ', Total: ' || rec.total_amount || 
+                                ', Date: ' || rec.sale_date);
+        END LOOP;
+    END list_purchases;
+
+    PROCEDURE display_payments(p_customer_id IN NUMBER) IS
+        CURSOR c_payments IS
+            SELECT payment_id, payment_amount, payment_date
+            FROM payments p
+            JOIN sales s ON p.sale_id = s.sale_id
+            WHERE s.customer_id = p_customer_id;
+        v_payment_id payments.payment_id%TYPE;
+        v_amount payments.payment_amount%TYPE;
+        v_payment_date payments.payment_date%TYPE;
+    BEGIN
+        OPEN c_payments;
+        LOOP
+            FETCH c_payments INTO v_payment_id, v_amount, v_payment_date;
+            EXIT WHEN c_payments%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('Payment ID: ' || v_payment_id || 
+                                ', Amount: ' || v_amount || 
+                                ', Date: ' || v_payment_date);
+        END LOOP;
+        CLOSE c_payments;
+    END display_payments;
+
+    FUNCTION total_paid(p_customer_id IN NUMBER) RETURN NUMBER IS
+        v_total NUMBER;
+    BEGIN
+        SELECT SUM(p.payment_amount)
+        INTO v_total
+        FROM payments p
+        JOIN sales s ON p.sale_id = s.sale_id
+        WHERE s.customer_id = p_customer_id;
+        RETURN NVL(v_total, 0);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN 0;
+        WHEN OTHERS THEN
+            RETURN -1;
+    END total_paid;
+    
+END customer_tools;
+/
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/dced24be-2487-4032-b8bf-82d0f89411a5" />
