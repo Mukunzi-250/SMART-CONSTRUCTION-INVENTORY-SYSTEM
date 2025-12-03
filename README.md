@@ -852,6 +852,59 @@ END;
 
 <img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/c8809340-eda6-4d36-b0db-2ad6997104b8" />
 
+# Testing the Triggers: Let's See If They Work! 🧪
+
+I tested these triggers to make sure they're doing their jobs like superheroes! Here's what I did and what happened:
+
+# Testing the Weekday Block Rule
+
+This rule should stop changes on weekdays (Monday to Friday).
+
+Wensday Test (Insert): I tried adding a new sale on wensday, 03-Dec-2025
+
+```sql
+SELECT 
+    'Current Date: ' || TO_CHAR(SYSDATE, 'DAY, DD-MON-YYYY') as date_info,
+    'Day Number: ' || TO_CHAR(SYSDATE, 'D') as day_number,
+    'Trigger Active? ' ||
+    CASE 
+        WHEN TO_CHAR(SYSDATE, 'D') BETWEEN 2 AND 6 THEN 'YES - Weekday restriction'
+        ELSE 'NO - Weekend allowed'
+    END as trigger_status
+FROM DUAL;
+```
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/ea37de49-3c6d-4ab2-8dba-1224a642b4f3" />
+
+
+**Try a weekend scenario (if today is Saturday/Sunday), I tried both Inserting and updating**
+
+```sql
+BEGIN
+    IF TO_CHAR(SYSDATE, 'D') IN (1, 7) THEN -- 1=Sunday, 7=Saturday
+        INSERT INTO sales (
+            sale_id, customer_id, material_id, quantity_sold, 
+            unit_price, total_amount, payment_status
+        )
+        SELECT 
+            10000,
+            (SELECT MIN(customer_id) FROM customers),
+            (SELECT MIN(material_id) FROM materials),
+            5,
+            (SELECT unit_price FROM materials WHERE material_id = 
+                (SELECT MIN(material_id) FROM materials)),
+            5 * (SELECT unit_price FROM materials WHERE material_id = 
+                (SELECT MIN(material_id) FROM materials)),
+            'PENDING'
+        FROM DUAL;
+        
+        DBMS_OUTPUT.PUT_LINE('Weekend insert successful!');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Today is weekday - insert would be blocked');
+    END IF;
+END;
+/
+```
+**Check Audit Logs**
 
 
 
