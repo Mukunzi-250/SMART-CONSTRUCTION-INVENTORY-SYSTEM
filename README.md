@@ -476,6 +476,26 @@ UPDATE sales SET payment_status = 'PAID' WHERE sale_id = 1;
 
 # 2. DDL (Data Definition Language)
 
+```sql
+CREATE TABLE alerts (
+    alert_id NUMBER PRIMARY KEY,
+    material_id NUMBER REFERENCES materials(material_id),
+    alert_type VARCHAR2(50),
+    alert_date DATE,
+    message VARCHAR2(255)
+);
+
+ALTER TABLE materials ADD warranty_months NUMBER DEFAULT 12;
+
+CREATE TABLE test_table (
+    id NUMBER PRIMARY KEY,
+    name VARCHAR2(50)
+);
+
+DROP TABLE test_table;
+```
+
+<img width="959" height="440" alt="image" src="https://github.com/user-attachments/assets/7cb91dc7-5105-4358-8724-762850cc8ab6" />
 
 
 # 3. Checking Payments
@@ -697,3 +717,96 @@ END customer_tools;
 ```
 
 <img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/dced24be-2487-4032-b8bf-82d0f89411a5" />
+
+# 9. Package Usage
+
+Used the package to list purchases, display payments, and calculate total payments for a customer.
+
+```sql
+DECLARE
+    v_amount NUMBER;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('--- Customer Purchases ---');
+    customer_tools.list_purchases(2000);
+    DBMS_OUTPUT.PUT_LINE('--- Customer Payments ---');
+    customer_tools.display_payments(2000);
+    v_amount := customer_tools.total_paid(2000);
+    DBMS_OUTPUT.PUT_LINE('Total Paid: ' || v_amount);
+END;
+/
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/28462546-7ead-4450-b645-6e9fd93e5f79" />
+
+See package_usage.png for the execution output (Sale ID: 4000, Material: 1000, Quantity: 50, Total: 540000, Payment ID: 5000, Amount: 540000, Date: 02-OCT-25, Total Paid: 540000).
+
+# 🏗️ Phase VII: Smart Rules & Tracking: Keeping the Construction Business Safe! 🕵️‍♂️
+
+**Why It's Needed �**�
+
+Construction material businesses are like busy construction sites—everyone's moving, and mistakes can sneak in! We need clever rules to:
+
+Stop changes on weekdays or holidays to keep things calm.
+
+Track every action like a detective with a magnifying glass.
+
+Make sales and inventory jobs super easy and safe.
+
+These rules are called triggers, and they act like magic guards protecting the construction material system!
+
+# Table Holidays
+
+```sql
+CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description VARCHAR2(100)
+);
+```
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/68aae07a-435b-432e-b287-1b96e4d38fbb" />
+
+# Creation of Table 
+
+```sql
+CREATE TABLE audit_logs (
+    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id VARCHAR2(50),
+    action_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+    operation VARCHAR2(50),
+    status VARCHAR2(20)
+);
+```
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/382dfd64-27c0-499b-a93d-9984567b30ed" />
+
+# Smart Rules (Triggers) 🚀
+
+# Block Weekday Changes
+
+This rule stops any changes (like adding, updating, or deleting sales) on Mondays to Fridays and on holidays.
+
+# Track Every Change
+
+This rule logs every sale change—like a diary that never forgets!
+
+# Log Denied Actions
+
+This logs when changes are blocked, so we know what happened.
+
+```sql
+CREATE OR REPLACE FUNCTION log_denied_action(p_action VARCHAR2)
+RETURN VARCHAR2 IS
+BEGIN
+    INSERT INTO audit_logs(user_id, operation, status)
+    VALUES (USER, p_action, 'Denied');
+    RETURN 'Logged';
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN 'Failed to log: ' || SQLERRM;
+END;
+/
+```
+
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/c8809340-eda6-4d36-b0db-2ad6997104b8" />
+
+
+
+
