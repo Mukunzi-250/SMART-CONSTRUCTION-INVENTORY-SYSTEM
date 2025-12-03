@@ -783,9 +783,54 @@ CREATE TABLE audit_logs (
 
 This rule stops any changes (like adding, updating, or deleting sales) on Mondays to Fridays and on holidays.
 
+```sql
+CREATE OR REPLACE TRIGGER trg_restrict_weekdays
+BEFORE INSERT OR UPDATE OR DELETE ON sales
+DECLARE
+    v_day VARCHAR2(10);
+    v_holiday_count NUMBER;
+BEGIN
+    v_day := TRIM(TO_CHAR(SYSDATE, 'DAY'));
+    IF v_day IN ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY') THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Sales cannot be modified on weekdays.');
+    END IF;
+    SELECT COUNT(*) INTO v_holiday_count
+    FROM holidays
+    WHERE TRUNC(holiday_date) = TRUNC(SYSDATE);
+    IF v_holiday_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Today is a holiday. Sales changes are not allowed.');
+    END IF;
+END;
+/
+```
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/b16ebab0-b41e-459f-a59c-92cd565526de" />
+
+
 # Track Every Change
 
 This rule logs every sale change—like a diary that never forgets!
+
+```sql
+CREATE OR REPLACE TRIGGER trg_audit_sales
+AFTER INSERT OR UPDATE OR DELETE ON sales
+FOR EACH ROW
+DECLARE
+    v_status VARCHAR2(20);
+BEGIN
+    IF INSERTING THEN
+        v_status := 'INSERT';
+    ELSIF UPDATING THEN
+        v_status := 'UPDATE';
+    ELSIF DELETING THEN
+        v_status := 'DELETE';
+    END IF;
+    INSERT INTO audit_logs(user_id, operation, status)
+    VALUES (USER, v_status, 'Logged');
+END;
+/
+```
+
+<img width="900" height="300" alt="image" src="https://github.com/user-attachments/assets/6c7940db-2cf2-4711-8864-0937e8c660f3" />
 
 # Log Denied Actions
 
