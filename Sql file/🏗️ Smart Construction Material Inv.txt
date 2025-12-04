@@ -1,0 +1,465 @@
+🏗️ Smart Construction Material Inventory & Sales Management System ( phase V - Phase VII)
+
+Student: MUKUNZI Eduine
+
+Student ID: 29275
+
+Group: C
+
+Course: Database Development with PL/SQL (INSY 8311)
+
+Lecturer: Eric Maniraguha
+
+PHASE V: Table Implementation & Data Insertion 🚀
+
+-- PHASE V: Create ALL Tables FIRST
+CREATE TABLE suppliers (
+    supplier_id NUMBER PRIMARY KEY,
+    supplier_name VARCHAR2(100) NOT NULL,
+    contact_person VARCHAR2(100),
+    phone_number VARCHAR2(20),
+    address VARCHAR2(200)
+);
+
+CREATE TABLE materials (
+    material_id NUMBER PRIMARY KEY,
+    material_name VARCHAR2(100) NOT NULL,
+    category VARCHAR2(50) NOT NULL,
+    unit_price NUMBER(10,2) NOT NULL CHECK (unit_price > 0),
+    quantity_in_stock NUMBER DEFAULT 0,
+    reorder_level NUMBER NOT NULL,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id),
+    last_updated DATE DEFAULT SYSDATE
+);
+
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(100) NOT NULL,
+    customer_type VARCHAR2(20),
+    phone_number VARCHAR2(20),
+    address VARCHAR2(200)
+);
+
+CREATE TABLE sales (
+    sale_id NUMBER PRIMARY KEY,
+    sale_date DATE DEFAULT SYSDATE,
+    customer_id NUMBER REFERENCES customers(customer_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_sold NUMBER NOT NULL CHECK (quantity_sold > 0),
+    unit_price NUMBER(10,2) NOT NULL,
+    total_amount NUMBER(10,2) NOT NULL,
+    payment_method VARCHAR2(20) DEFAULT 'Cash'
+);
+
+CREATE TABLE deliveries (
+    delivery_id NUMBER PRIMARY KEY,
+    delivery_date DATE DEFAULT SYSDATE,
+    supplier_id NUMBER REFERENCES suppliers(supplier_id),
+    material_id NUMBER REFERENCES materials(material_id),
+    quantity_delivered NUMBER NOT NULL,
+    received_by VARCHAR2(100)
+);
+
+CREATE TABLE stock_alerts (
+    alert_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    material_id NUMBER REFERENCES materials(material_id),
+    alert_type VARCHAR2(50) NOT NULL,
+    alert_message VARCHAR2(200) NOT NULL,
+    alert_date DATE DEFAULT SYSDATE,
+    resolved CHAR(1) DEFAULT 'N'
+);
+
+CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description VARCHAR2(100)
+);
+
+CREATE TABLE audit_logs (
+    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id VARCHAR2(50),
+    action_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+    table_name VARCHAR2(50),
+    operation VARCHAR2(20),
+    old_values CLOB,
+    new_values CLOB
+);
+
+
+
+-- Insert data into ALL tables
+
+-- Suppliers
+INSERT INTO suppliers VALUES (1, 'CementCo Rwanda Ltd', 'Jean Bosco', '0781000001', 'Kigali');
+INSERT INTO suppliers VALUES (2, 'Steel Masters Africa', 'Alice Uwase', '0781000002', 'Gasabo');
+INSERT INTO suppliers VALUES (3, 'Tile World Rwanda', 'Patrick Brown', '0781000003', 'Kicukiro');
+INSERT INTO suppliers VALUES (4, 'Roofing Solutions Co', 'Marie Claire', '0781000004', 'Nyarugenge');
+INSERT INTO suppliers VALUES (5, 'Hardware Express', 'David Smith', '0781000005', 'Gikondo');
+
+-- Materials
+INSERT INTO materials VALUES (1, 'Portland Cement 50kg', 'Cement', 8500, 500, 100, 1, SYSDATE);
+INSERT INTO materials VALUES (2, 'Iron Bars 12mm', 'Steel', 12500, 200, 50, 2, SYSDATE);
+INSERT INTO materials VALUES (3, 'Iron Bars 8mm', 'Steel', 9500, 300, 75, 2, SYSDATE);
+INSERT INTO materials VALUES (4, 'Ceramic Tiles 30x30cm', 'Tiles', 4500, 800, 200, 3, SYSDATE);
+INSERT INTO materials VALUES (5, 'Roofing Sheets 3m', 'Roofing', 9800, 150, 30, 4, SYSDATE);
+INSERT INTO materials VALUES (6, 'Nails 2-inch', 'Hardware', 500, 1000, 200, 5, SYSDATE);
+INSERT INTO materials VALUES (7, 'Paint White 4L', 'Finishing', 12000, 100, 25, 5, SYSDATE);
+INSERT INTO materials VALUES (8, 'Sand Ton', 'Aggregate', 15000, 50, 10, 1, SYSDATE);
+
+-- Customers
+INSERT INTO customers VALUES (1, 'Building Contractors Rwanda', 'Company', '0782000001', 'Kigali');
+INSERT INTO customers VALUES (2, 'Home Solutions Ltd', 'Company', '0782000002', 'Gasabo');
+INSERT INTO customers VALUES (3, 'Individual Home Builder', 'Individual', '0782000003', 'Remera');
+INSERT INTO customers VALUES (4, 'Construction Masters Co', 'Company', '0782000004', 'Kicukiro');
+INSERT INTO customers VALUES (5, 'Real Estate Developers', 'Company', '0782000005', 'Nyarutarama');
+
+-- Sales
+INSERT INTO sales VALUES (1, DATE '2025-11-01', 1, 1, 10, 8500, 85000, 'Cash');
+INSERT INTO sales VALUES (2, DATE '2025-11-02', 2, 2, 5, 12500, 62500, 'Bank Transfer');
+INSERT INTO sales VALUES (3, DATE '2025-11-03', 3, 4, 20, 4500, 90000, 'Cash');
+INSERT INTO sales VALUES (4, DATE '2025-11-04', 4, 5, 8, 9800, 78400, 'Mobile Money');
+INSERT INTO sales VALUES (5, DATE '2025-11-05', 5, 3, 15, 9500, 142500, 'Bank Transfer');
+INSERT INTO sales VALUES (6, DATE '2025-11-06', 1, 6, 50, 500, 25000, 'Cash');
+
+-- Deliveries
+INSERT INTO deliveries VALUES (1, DATE '2025-11-10', 1, 1, 200, 'Store Manager');
+INSERT INTO deliveries VALUES (2, DATE '2025-11-11', 2, 2, 100, 'Assistant Manager');
+INSERT INTO deliveries VALUES (3, DATE '2025-11-12', 3, 4, 300, 'Store Manager');
+INSERT INTO deliveries VALUES (4, DATE '2025-11-13', 4, 5, 50, 'Assistant Manager');
+INSERT INTO deliveries VALUES (5, DATE '2025-11-14', 5, 6, 200, 'Store Manager');
+
+-- Holidays
+INSERT INTO holidays VALUES (DATE '2025-12-25', 'Christmas Day');
+INSERT INTO holidays VALUES (DATE '2026-01-01', 'New Years Day');
+
+COMMIT;
+
+
+Phase VI: Using the Database 🚀
+
+1. DML (Data Manipulation Language)
+
+UPDATE materials SET quantity_in_stock = 90 WHERE material_id = 1;
+
+INSERT INTO customers (customer_id, customer_name, phone_number) 
+VALUES (100, 'New Construction Co.', '+250788888888');
+
+UPDATE sales SET payment_status = 'PAID' WHERE sale_id = 1;
+
+2. DDL (Data Definition Language)
+
+CREATE TABLE alerts (
+    alert_id NUMBER PRIMARY KEY,
+    material_id NUMBER REFERENCES materials(material_id),
+    alert_type VARCHAR2(50),
+    alert_date DATE,
+    message VARCHAR2(255)
+);
+
+ALTER TABLE materials ADD warranty_months NUMBER DEFAULT 12;
+
+CREATE TABLE test_table (
+    id NUMBER PRIMARY KEY,
+    name VARCHAR2(50)
+);
+
+DROP TABLE test_table;
+
+
+3. Checking Payments
+
+SELECT 
+    s.customer_id,
+    c.customer_name,
+    p.payment_id,
+    p.payment_amount,
+    SUM(p.payment_amount) OVER (
+        PARTITION BY s.customer_id 
+        ORDER BY p.payment_date
+    ) AS running_total
+FROM payments p
+JOIN sales s ON p.sale_id = s.sale_id
+JOIN customers c ON s.customer_id = c.customer_id;
+
+4. Smart Procedure - 2. Analytical Task
+
+SELECT 
+    s.customer_id,
+    c.customer_name,
+    p.payment_id,
+    p.payment_amount,
+    p.payment_date,
+    SUM(p.payment_amount) OVER (
+        PARTITION BY s.customer_id 
+        ORDER BY p.payment_date
+    ) AS running_total
+FROM payments p
+JOIN sales s ON p.sale_id = s.sale_id
+JOIN customers c ON s.customer_id = c.customer_id;
+
+5. Procedure Implementation
+
+CREATE OR REPLACE PROCEDURE get_customer_info(p_customer_id IN NUMBER) IS
+    v_name customers.customer_name%TYPE;
+    v_phone customers.phone_number%TYPE;
+BEGIN
+    SELECT customer_name, phone_number
+    INTO v_name, v_phone
+    FROM customers
+    WHERE customer_id = p_customer_id;
+
+    DBMS_OUTPUT.PUT_LINE('Customer Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Phone Number: ' || v_phone);
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No customer found with ID ' || p_customer_id);
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+
+
+Procedure call:
+
+BEGIN
+    get_customer_info(2000);
+END;
+/
+
+6. Implementation with Cursor
+
+DECLARE
+    CURSOR c_customer_purchases IS
+        SELECT sale_id, material_id, quantity_sold, total_amount, sale_date
+        FROM sales
+        WHERE customer_id = 2000;
+    v_sale_id sales.sale_id%TYPE;
+    v_material_id sales.material_id%TYPE;
+    v_quantity sales.quantity_sold%TYPE;
+    v_total sales.total_amount%TYPE;
+    v_date sales.sale_date%TYPE;
+BEGIN
+    OPEN c_customer_purchases;
+    LOOP
+        FETCH c_customer_purchases INTO v_sale_id, v_material_id, v_quantity, v_total, v_date;
+        EXIT WHEN c_customer_purchases%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Sale ID: ' || v_sale_id || 
+                            ', Material: ' || v_material_id || 
+                            ', Quantity: ' || v_quantity || 
+                            ', Total: ' || v_total || 
+                            ', Date: ' || v_date);
+    END LOOP;
+    CLOSE c_customer_purchases;
+END;
+/
+
+
+7. Function Implementation
+
+CREATE OR REPLACE FUNCTION total_amount_paid(p_customer_id IN NUMBER) 
+RETURN NUMBER IS
+    v_total NUMBER;
+BEGIN
+    SELECT SUM(p.payment_amount)
+    INTO v_total
+    FROM payments p
+    JOIN sales s ON p.sale_id = s.sale_id
+    WHERE s.customer_id = p_customer_id;
+    RETURN NVL(v_total, 0);
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 0;
+    WHEN OTHERS THEN
+        RETURN -1;
+END;
+/
+
+
+Testing:
+
+SELECT total_amount_paid(2000) as total_paid FROM DUAL;
+
+8. Package Implementation
+
+CREATE OR REPLACE PACKAGE BODY customer_tools AS
+    
+    PROCEDURE list_purchases(p_customer_id IN NUMBER) IS
+    BEGIN
+        FOR rec IN (
+            SELECT sale_id, material_id, quantity_sold, total_amount, sale_date
+            FROM sales
+            WHERE customer_id = p_customer_id
+        ) LOOP
+            DBMS_OUTPUT.PUT_LINE('Sale ID: ' || rec.sale_id || 
+                                ', Material: ' || rec.material_id || 
+                                ', Quantity: ' || rec.quantity_sold || 
+                                ', Total: ' || rec.total_amount || 
+                                ', Date: ' || rec.sale_date);
+        END LOOP;
+    END list_purchases;
+
+    PROCEDURE display_payments(p_customer_id IN NUMBER) IS
+        CURSOR c_payments IS
+            SELECT payment_id, payment_amount, payment_date
+            FROM payments p
+            JOIN sales s ON p.sale_id = s.sale_id
+            WHERE s.customer_id = p_customer_id;
+        v_payment_id payments.payment_id%TYPE;
+        v_amount payments.payment_amount%TYPE;
+        v_payment_date payments.payment_date%TYPE;
+    BEGIN
+        OPEN c_payments;
+        LOOP
+            FETCH c_payments INTO v_payment_id, v_amount, v_payment_date;
+            EXIT WHEN c_payments%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('Payment ID: ' || v_payment_id || 
+                                ', Amount: ' || v_amount || 
+                                ', Date: ' || v_payment_date);
+        END LOOP;
+        CLOSE c_payments;
+    END display_payments;
+
+    FUNCTION total_paid(p_customer_id IN NUMBER) RETURN NUMBER IS
+        v_total NUMBER;
+    BEGIN
+        SELECT SUM(p.payment_amount)
+        INTO v_total
+        FROM payments p
+        JOIN sales s ON p.sale_id = s.sale_id
+        WHERE s.customer_id = p_customer_id;
+        RETURN NVL(v_total, 0);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN 0;
+        WHEN OTHERS THEN
+            RETURN -1;
+    END total_paid;
+    
+END customer_tools;
+/
+
+9. Package Usage
+
+DECLARE
+    v_amount NUMBER;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('--- Customer Purchases ---');
+    customer_tools.list_purchases(2000);
+    DBMS_OUTPUT.PUT_LINE('--- Customer Payments ---');
+    customer_tools.display_payments(2000);
+    v_amount := customer_tools.total_paid(2000);
+    DBMS_OUTPUT.PUT_LINE('Total Paid: ' || v_amount);
+END;
+/
+
+Table Holidays
+
+CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description VARCHAR2(100)
+);
+
+Creation of Table
+
+CREATE TABLE audit_logs (
+    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id VARCHAR2(50),
+    action_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+    operation VARCHAR2(50),
+    status VARCHAR2(20)
+);
+
+Smart Rules (Triggers) 🚀
+
+CREATE OR REPLACE TRIGGER trg_restrict_weekdays
+BEFORE INSERT OR UPDATE OR DELETE ON sales
+DECLARE
+    v_day VARCHAR2(10);
+    v_holiday_count NUMBER;
+BEGIN
+    v_day := TRIM(TO_CHAR(SYSDATE, 'DAY'));
+    IF v_day IN ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY') THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Sales cannot be modified on weekdays.');
+    END IF;
+    SELECT COUNT(*) INTO v_holiday_count
+    FROM holidays
+    WHERE TRUNC(holiday_date) = TRUNC(SYSDATE);
+    IF v_holiday_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Today is a holiday. Sales changes are not allowed.');
+    END IF;
+END;
+/
+
+Track Every Change
+
+CREATE OR REPLACE TRIGGER trg_audit_sales
+AFTER INSERT OR UPDATE OR DELETE ON sales
+FOR EACH ROW
+DECLARE
+    v_status VARCHAR2(20);
+BEGIN
+    IF INSERTING THEN
+        v_status := 'INSERT';
+    ELSIF UPDATING THEN
+        v_status := 'UPDATE';
+    ELSIF DELETING THEN
+        v_status := 'DELETE';
+    END IF;
+    INSERT INTO audit_logs(user_id, operation, status)
+    VALUES (USER, v_status, 'Logged');
+END;
+/
+
+Log Denied Actions
+
+CREATE OR REPLACE FUNCTION log_denied_action(p_action VARCHAR2)
+RETURN VARCHAR2 IS
+BEGIN
+    INSERT INTO audit_logs(user_id, operation, status)
+    VALUES (USER, p_action, 'Denied');
+    RETURN 'Logged';
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN 'Failed to log: ' || SQLERRM;
+END;
+/
+
+Testing the Weekday Block Rule
+
+SELECT 
+    'Current Date: ' || TO_CHAR(SYSDATE, 'DAY, DD-MON-YYYY') as date_info,
+    'Day Number: ' || TO_CHAR(SYSDATE, 'D') as day_number,
+    'Trigger Active? ' ||
+    CASE 
+        WHEN TO_CHAR(SYSDATE, 'D') BETWEEN 2 AND 6 THEN 'YES - Weekday restriction'
+        ELSE 'NO - Weekend allowed'
+    END as trigger_status
+FROM DUAL;
+
+Try a weekend scenario (if today is Saturday/Sunday)
+
+BEGIN
+    IF TO_CHAR(SYSDATE, 'D') IN (1, 7) THEN -- 1=Sunday, 7=Saturday
+        INSERT INTO sales (
+            sale_id, customer_id, material_id, quantity_sold, 
+            unit_price, total_amount, payment_status
+        )
+        SELECT 
+            10000,
+            (SELECT MIN(customer_id) FROM customers),
+            (SELECT MIN(material_id) FROM materials),
+            5,
+            (SELECT unit_price FROM materials WHERE material_id = 
+                (SELECT MIN(material_id) FROM materials)),
+            5 * (SELECT unit_price FROM materials WHERE material_id = 
+                (SELECT MIN(material_id) FROM materials)),
+            'PENDING'
+        FROM DUAL;
+        
+        DBMS_OUTPUT.PUT_LINE('Weekend insert successful!');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Today is weekday - insert would be blocked');
+    END IF;
+END;
+/
+
