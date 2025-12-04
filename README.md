@@ -645,11 +645,15 @@ END;
 /
 ```
 
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/1c7e9aa2-b918-4c51-ba4a-ccd83067e87e" />
+
+
 # Testing:
 
 ```sql
 SELECT total_amount_paid(2000) as total_paid FROM DUAL;
 ```
+<img width="900" height="300" alt="image" src="https://github.com/user-attachments/assets/a4531ba2-746c-4945-ae5b-1516b4142257" />
 
 See total_amount_paid.png for the function creation and a test query result (total_paid 540000 for customer_id 2000).
 
@@ -904,6 +908,8 @@ BEGIN
 END;
 /
 ```
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/8badb1ff-c874-45cf-90a1-d6fee532d6ac" />
+
 **Check Audit Logs**
 
 
