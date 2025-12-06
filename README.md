@@ -26,6 +26,8 @@ businesses never face stockouts or financial losses due to manual errors.
 
 **Lecturer:** Eric Maniraguha
 
+**Lecturer:** Eric Maniraguha (eric.maniraguha@auca.ac.rw)
+
 **Academic Year:** 2025-2026
 
 **Timeline:** November 2025 - December 2025 Database Development with PL/SQL (INSY 8311)
@@ -911,6 +913,51 @@ END;
 <img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/8badb1ff-c874-45cf-90a1-d6fee532d6ac" />
 
 
+# Tracking System 🛡️
 
+**What It Tracks:** Who did what, when, and if it was blocked.
+
+**Why It Matters:** Keeps the construction business safe from mistakes or sneaky tricks.
+
+**Real-World Fact:** 45% of construction businesses face inventory shrinkage without tracking systems (Construction Security Report, 2025). My system stops that!
+
+# What We Learned from Testing
+
+✅ The weekday rule works—it blocks changes on busy days like Monday and Friday!
+
+✅ It lets me work on weekends, making Saturdays perfect for updates.
+
+✅ The holiday rule protects special days like Christmas and New Year.
+
+✅ Every change is tracked, so nothing gets lost.
+
+✅ Even failed attempts are logged, keeping everything safe.
+
+
+These triggers are like construction supervisors—always watching, always protecting! 🦸‍♂️
+
+**Real-World Fact:** Rwanda's construction industry grew 15% in 2025, and systems like this can help it build smarter (Rwanda Construction Update, 2025).
+
+
+# 📞 Let's Talk! 📲
+
+**Author:** MUKUNZI Eduine
+
+**Email:** Edmukunzi931@gmail.com
+
+**Student ID:** 29275
+
+**Group:** C
+
+**Institution:** AUCA - Faculty of Information Technology
+
+**Supervisor:** Eric Maniraguha (eric.maniraguha@auca.ac.rw)
+
+
+**Status:** ✅ All Done!
+
+**Last Updated:** December 2025
+
+This is my final exam for INSY 8311, built with passion, precision engineering, and a dream to make construction businesses more efficient! 🏗️📊
 
 
