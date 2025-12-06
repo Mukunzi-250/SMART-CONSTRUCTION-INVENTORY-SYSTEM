@@ -30,7 +30,7 @@ businesses never face stockouts or financial losses due to manual errors.
 
 **Academic Year:** 2025-2026
 
-**Timeline:** November 2025 - December 2025 Database Development with PL/SQL (INSY 8311)
+**Timeline:** November 2025 - December 2025 
 
 **GitHub:** [Link to be added for submission]
 
@@ -49,8 +49,6 @@ delays caused by material shortages(Construction Industry Report, 2025).
 **📁 phase-6-plsql-development**
  
 **📁 phase-7-advanced-features**
-
-**📁 phase-8-documentation-bi**
 
 **📁 testing-results**
  
