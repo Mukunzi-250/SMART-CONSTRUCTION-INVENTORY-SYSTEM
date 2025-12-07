@@ -50,6 +50,8 @@ delays caused by material shortages(Construction Industry Report, 2025).
  
 **📁 phase-7-advanced-features**
 
+**📁 phase-8-pptx**
+
 **📁 testing-results**
  
 **📁 conclusion**
